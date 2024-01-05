@@ -1,23 +1,23 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 
 public class CasseBrique extends Canvas {
+
+    public static final int LARGEUR = 500;
+    public static final int HAUTEUR = 600;
 
     public CasseBrique() {
 
         JFrame fenetre = new JFrame();
 
-        this.setSize(500,600);
-        this.setBounds(0,0,500,600);
+        this.setSize(LARGEUR, HAUTEUR);
+        this.setBounds(0,0, LARGEUR, HAUTEUR);
         this.setIgnoreRepaint(true);
         this.setFocusable(false);
 
         fenetre.pack();
-        fenetre.setSize(500,600);
+        fenetre.setSize(LARGEUR, HAUTEUR);
         fenetre.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         fenetre.setResizable(false);
         fenetre.requestFocus();
@@ -33,7 +33,13 @@ public class CasseBrique extends Canvas {
 
     public void demarrer() {
 
-        Balle balle = new Balle(200,300,20);
+        ArrayList<Balle> listeBalle = new ArrayList<>();
+
+        for(int i = 0 ; i < 3 ; i++) {
+            listeBalle.add(new Balle(20));
+        }
+
+
 
         while(true) {
 
@@ -42,18 +48,11 @@ public class CasseBrique extends Canvas {
                 Graphics2D dessin = (Graphics2D) this.getBufferStrategy().getDrawGraphics();
 
                 dessin.setColor(Color.WHITE);
-                dessin.fillRect(0,0,500,600);
+                dessin.fillRect(0,0, LARGEUR, HAUTEUR);
 
-                dessin.setColor(Color.RED);
-                dessin.fillOval(balle.getX(), balle.getY(),  balle.getDiametre(), balle.getDiametre());
-                xBalle += vitesseHorizontal;
-                yBalle += vitesseVertical;
-
-                if(xBalle >= 500 -20 || xBalle <= 0) {
-                    vitesseHorizontal = -vitesseHorizontal;
-                }
-                if(yBalle >= 600 -20 || yBalle <= 0) {
-                    vitesseVertical = -vitesseVertical;
+                for(Balle balle : listeBalle) {
+                    balle.dessiner(dessin);
+                    balle.deplacement();
                 }
 
                 dessin.dispose();

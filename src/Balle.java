@@ -1,13 +1,10 @@
 import java.awt.*;
 
-public class Balle {
+public class Balle extends Sprite{
 
-    private int x;
-    private int y;
     private int diametre;
     private int vitesseHorizontal;
     private int vitesseVertical;
-    private Color couleur;
 
     public Balle(int x, int y, int diametre) {
         this.x = x;
@@ -18,21 +15,33 @@ public class Balle {
         this.couleur = Color.RED;
     }
 
-    public int getX() {
-        return x;
+    public Balle(int diametre) {
+        this.diametre = diametre;
+        this.x = (int)(Math.random() * CasseBrique.LARGEUR);
+        this.y = (int)(Math.random() * CasseBrique.HAUTEUR);
+        this.vitesseHorizontal = (int)(Math.random() * 5) + 2;
+        this.vitesseVertical = (int)(Math.random() * 5) + 2;
+        this.couleur = new Color((float)Math.random(),(float)Math.random(),(float)Math.random());
     }
 
-    public void setX(int x) {
-        this.x = x;
+    public void deplacement() {
+        x += vitesseHorizontal;
+        y += vitesseVertical;
+
+        if(x >= CasseBrique.LARGEUR -diametre || x <= 0) {
+            vitesseHorizontal = -vitesseHorizontal;
+        }
+        if(y >= CasseBrique.HAUTEUR -diametre || y <= 0) {
+            vitesseVertical = -vitesseVertical;
+        }
     }
 
-    public int getY() {
-        return y;
+    public void dessiner(Graphics2D dessin) {
+        dessin.setColor(couleur);
+        dessin.fillOval(x, y,  diametre, diametre);
     }
 
-    public void setY(int y) {
-        this.y = y;
-    }
+
 
     public int getDiametre() {
         return diametre;
@@ -58,11 +67,5 @@ public class Balle {
         this.vitesseVertical = vitesseVertical;
     }
 
-    public Color getCouleur() {
-        return couleur;
-    }
 
-    public void setCouleur(Color couleur) {
-        this.couleur = couleur;
-    }
 }

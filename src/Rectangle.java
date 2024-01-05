@@ -1,25 +1,9 @@
-public class Rectangle {
+import java.awt.*;
 
-    private int x;
-    private int y;
+public class Rectangle extends Sprite {
+
     private int largeur;
     private int hauteur;
-
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
 
     public int getLargeur() {
         return largeur;
@@ -35,5 +19,11 @@ public class Rectangle {
 
     public void setHauteur(int hauteur) {
         this.hauteur = hauteur;
+    }
+
+    @Override
+    public void dessiner(Graphics2D dessin) {
+        dessin.setColor(couleur);
+        dessin.fillRect(x, y,  largeur, hauteur);
     }
 }
