@@ -1,3 +1,8 @@
+package jeu;
+
+import jeu.models.Balle;
+import jeu.models.Barre;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -9,6 +14,9 @@ public class CasseBrique extends Canvas implements KeyListener {
     public static final int LARGEUR = 500;
     public static final int HAUTEUR = 600;
 
+    protected ArrayList<Balle> listeBalle = new ArrayList<>();
+    protected Barre barre = new Barre();
+
     public CasseBrique() {
 
         JFrame fenetre = new JFrame();
@@ -19,7 +27,7 @@ public class CasseBrique extends Canvas implements KeyListener {
         this.setFocusable(false);
 
         fenetre.pack();
-        fenetre.setSize(LARGEUR, HAUTEUR);
+        fenetre.setSize(LARGEUR + 20, HAUTEUR + 40);
         fenetre.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         fenetre.setResizable(false);
         fenetre.requestFocus();
@@ -35,10 +43,6 @@ public class CasseBrique extends Canvas implements KeyListener {
     }
 
     public void demarrer() {
-
-        ArrayList<Balle> listeBalle = new ArrayList<>();
-
-        Barre barre = new Barre();
 
         for(int i = 0 ; i < 3 ; i++) {
             listeBalle.add(new Balle(20));
@@ -60,6 +64,10 @@ public class CasseBrique extends Canvas implements KeyListener {
                 for(Balle balle : listeBalle) {
                     balle.dessiner(dessin);
                     balle.deplacement();
+                    //si la balle touche la barre
+                    if(barre.collision(balle)){
+                        balle.setVitesseVertical(-balle.getVitesseVertical());
+                    }
                 }
 
                 dessin.dispose();
@@ -74,7 +82,14 @@ public class CasseBrique extends Canvas implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        
+
+        //quand la touche gauche est enfoncée
+        if(e.getKeyCode() == 37) {
+            barre.deplacerGauche();
+        } else if (e.getKeyCode() == 39) {
+            //quand la touche droite est enfoncée
+            barre.deplacerDroite();
+        }
     }
 
 

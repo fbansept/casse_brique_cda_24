@@ -1,3 +1,5 @@
+package jeu.models;
+
 import java.awt.*;
 
 public class Rectangle extends Sprite {
@@ -25,6 +27,13 @@ public class Rectangle extends Sprite {
 
     public void setHauteur(int hauteur) {
         this.hauteur = hauteur;
+    }
+
+    public boolean collision(Sprite sprite) {
+        return sprite.getX() > x
+                && sprite.getX() < x + largeur
+                && sprite.getY() > y
+                && sprite.getY() < y + hauteur;
     }
 
     @Override

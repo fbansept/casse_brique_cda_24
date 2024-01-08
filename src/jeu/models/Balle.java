@@ -1,3 +1,5 @@
+package jeu.models;
+
 import java.awt.*;
 
 public class Balle extends Sprite{
