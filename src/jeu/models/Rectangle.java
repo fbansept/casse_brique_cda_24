@@ -29,11 +29,11 @@ public class Rectangle extends Sprite {
         this.hauteur = hauteur;
     }
 
-    public boolean collision(Sprite sprite) {
-        return sprite.getX() > x
-                && sprite.getX() < x + largeur
-                && sprite.getY() > y
-                && sprite.getY() < y + hauteur;
+    public boolean collision(Balle balle) {
+        return balle.getCentreX() > x
+                && balle.getCentreX() < x + largeur
+                && balle.getCentreY() > y
+                && balle.getCentreY() < y + hauteur;
     }
 
     @Override

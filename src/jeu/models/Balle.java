@@ -29,6 +29,14 @@ public class Balle extends Sprite{
         this.vitesseVertical = (int)(Math.random() * 5) + 2;
     }
 
+    public int getCentreX() {
+        return x + diametre / 2;
+    }
+
+    public int getCentreY() {
+        return y + diametre / 2;
+    }
+
     public void deplacement() {
         x += vitesseHorizontal;
         y += vitesseVertical;

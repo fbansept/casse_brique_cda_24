@@ -48,7 +48,9 @@ public class CasseBrique extends Canvas implements KeyListener {
             listeBalle.add(new Balle(20));
         }
 
-
+        //Créer 5 x 10 briques
+        //alimenter l' ArrayList listeBrique
+        //3 lignes
 
         while(true) {
 
@@ -61,10 +63,19 @@ public class CasseBrique extends Canvas implements KeyListener {
 
                 barre.dessiner(dessin);
 
+                //afficher toutes les briques (3 lignes)
+
                 for(Balle balle : listeBalle) {
                     balle.dessiner(dessin);
                     balle.deplacement();
-                    //si la balle touche la barre
+
+                    //pour chaque brique, tester la collision
+                    //stocker dans une liste les brique impactées
+                    //apres le foreach des briques, supprimer les brique impactées
+
+                    //Note : parce qu'on ne peut pas supprimer un element d'une liste
+                    // alors qu'on parcours cette liste
+
                     if(barre.collision(balle)){
                         balle.setVitesseVertical(-balle.getVitesseVertical());
                     }
