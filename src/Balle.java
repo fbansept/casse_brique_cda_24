@@ -7,21 +7,22 @@ public class Balle extends Sprite{
     private int vitesseVertical;
 
     public Balle(int x, int y, int diametre) {
-        this.x = x;
-        this.y = y;
+        super(x, y, Color.RED);
         this.diametre = diametre;
         this.vitesseHorizontal = 5;
         this.vitesseVertical = 4;
-        this.couleur = Color.RED;
     }
 
     public Balle(int diametre) {
+        super(
+                (int)(Math.random() * CasseBrique.LARGEUR),
+                (int)(Math.random() * CasseBrique.HAUTEUR),
+                new Color((float)Math.random(),(float)Math.random(),(float)Math.random())
+        );
+
         this.diametre = diametre;
-        this.x = (int)(Math.random() * CasseBrique.LARGEUR);
-        this.y = (int)(Math.random() * CasseBrique.HAUTEUR);
         this.vitesseHorizontal = (int)(Math.random() * 5) + 2;
         this.vitesseVertical = (int)(Math.random() * 5) + 2;
-        this.couleur = new Color((float)Math.random(),(float)Math.random(),(float)Math.random());
     }
 
     public void deplacement() {

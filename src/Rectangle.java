@@ -2,8 +2,14 @@ import java.awt.*;
 
 public class Rectangle extends Sprite {
 
-    private int largeur;
-    private int hauteur;
+    public Rectangle(int x, int y, Color couleur, int largeur, int hauteur) {
+        super(x, y, couleur);
+        this.largeur = largeur;
+        this.hauteur = hauteur;
+    }
+
+    protected int largeur;
+    protected int hauteur;
 
     public int getLargeur() {
         return largeur;
