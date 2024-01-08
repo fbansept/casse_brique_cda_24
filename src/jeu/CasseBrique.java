@@ -2,6 +2,7 @@ package jeu;
 
 import jeu.models.Balle;
 import jeu.models.Barre;
+import jeu.models.Brique;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,6 +16,9 @@ public class CasseBrique extends Canvas implements KeyListener {
     public static final int HAUTEUR = 600;
 
     protected ArrayList<Balle> listeBalle = new ArrayList<>();
+    protected ArrayList<Brique> listeBrique = new ArrayList<>();
+
+
     protected Barre barre = new Barre();
 
     public CasseBrique() {
@@ -48,9 +52,11 @@ public class CasseBrique extends Canvas implements KeyListener {
             listeBalle.add(new Balle(20));
         }
 
-        //Créer 5 x 10 briques
-        //alimenter l' ArrayList listeBrique
-        //3 lignes
+        for(int indexColonne = 0 ; indexColonne < 10 ; indexColonne++) {
+            for(int indexLigne = 0 ; indexLigne < 5 ; indexLigne++) {
+                listeBrique.add(new Brique(indexColonne * 50, indexLigne * 30));
+            }
+        }
 
         while(true) {
 
@@ -63,7 +69,10 @@ public class CasseBrique extends Canvas implements KeyListener {
 
                 barre.dessiner(dessin);
 
-                //afficher toutes les briques (3 lignes)
+                for(Brique brique : listeBrique) {
+                    brique.dessiner(dessin);
+                }
+
 
                 for(Balle balle : listeBalle) {
                     balle.dessiner(dessin);

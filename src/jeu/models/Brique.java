@@ -4,7 +4,7 @@ import java.awt.*;
 
 public class Brique extends Rectangle{
 
-    public Brique(int x, int y, Color couleur, int largeur, int hauteur) {
-        super(x, y, couleur, largeur, hauteur);
+    public Brique(int x, int y) {
+        super(x, y, Color.RED, 40, 20);
     }
 }
