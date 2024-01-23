@@ -108,17 +108,19 @@ public class CasseBrique extends Canvas implements KeyListener, MouseListener {
                         balle.dessiner(dessin);
                         balle.deplacement();
 
+                        ArrayList<Brique> briqueAsupprimer = new ArrayList<>();
+
                         //pour chaque brique, tester la collision
                         for (Brique brique : listeBrique) {
-
-                            //si collision
-
-                            //stocker dans une liste les brique impactées
+                            if(brique.collision(balle)){
+                                briqueAsupprimer.add(brique);
+                                balle.setVitesseVertical(-balle.getVitesseVertical());
+                            }
                         }
-                        //apres le foreach des briques, supprimer les brique impactées
 
-                        //Note : parce qu'on ne peut pas supprimer un element d'une liste
-                        // alors qu'on parcours cette liste
+                        for (Brique brique : briqueAsupprimer) {
+                            listeBrique.remove(brique);
+                        }
 
                         if (barre.collision(balle)) {
                             balle.setVitesseVertical(-balle.getVitesseVertical());

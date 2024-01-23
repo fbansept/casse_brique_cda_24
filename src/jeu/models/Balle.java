@@ -4,14 +4,13 @@ import jeu.CasseBrique;
 
 import java.awt.*;
 
-public class Balle extends Sprite{
+public class Balle extends Rond{
 
-    private int diametre;
     private int vitesseHorizontal;
     private int vitesseVertical;
 
     public Balle(int x, int y, int diametre) {
-        super(x, y, Color.RED);
+        super(x, y, Color.RED, diametre);
         this.diametre = diametre;
         this.vitesseHorizontal = 5;
         this.vitesseVertical = 4;
@@ -21,10 +20,10 @@ public class Balle extends Sprite{
         super(
                 (int)(Math.random() * CasseBrique.LARGEUR),
                 (int)(Math.random() * CasseBrique.HAUTEUR),
-                new Color((float)Math.random(),(float)Math.random(),(float)Math.random())
+                new Color((float)Math.random(),(float)Math.random(),(float)Math.random()),
+                diametre
         );
 
-        this.diametre = diametre;
         this.vitesseHorizontal = (int)(Math.random() * 5) + 2;
         this.vitesseVertical = (int)(Math.random() * 5) + 2;
     }
