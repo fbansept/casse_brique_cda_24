@@ -24,12 +24,14 @@ public class CasseBrique extends Canvas implements KeyListener, MouseListener {
 
     protected Barre barre = new Barre();
 
+    protected boolean pause = false;
+
     public CasseBrique() {
 
         JFrame fenetre = new JFrame();
 
         this.setSize(LARGEUR, HAUTEUR);
-        this.setBounds(0,0, LARGEUR, HAUTEUR);
+        this.setBounds(0, 0, LARGEUR, HAUTEUR);
         this.setIgnoreRepaint(true);
         this.setFocusable(false);
 
@@ -46,78 +48,93 @@ public class CasseBrique extends Canvas implements KeyListener, MouseListener {
 
         fenetre.setVisible(true);
         this.createBufferStrategy(2);
-        demarrer();
-    }
 
-    public void demarrer() {
-
-        for(int i = 0 ; i < 3 ; i++) {
-            listeBalle.add(new Balle(20));
-        }
-
-        for(int indexColonne = 0 ; indexColonne < 10 ; indexColonne++) {
-            for(int indexLigne = 0 ; indexLigne < 5 ; indexLigne++) {
-                listeBrique.add(new Brique(indexColonne * 50, indexLigne * 30));
-            }
-        }
 
         CanvasBouton boutonPause = new CanvasBouton(
                 20, 20, Color.BLUE, 50, 40, "PAUSE");
 
-        boutonPause.addEvenementBouton(() -> System.out.println("jeu en pause"));
+        boutonPause.addEvenementBouton(() -> {
+            pause = !pause;
+        });
 
         CanvasBouton boutonRecommencer = new CanvasBouton(
                 150, 20, Color.BLUE, 100, 40, "RECOMMENCER");
 
-        boutonRecommencer.addEvenementBouton(() -> System.out.println("Recommencer le jeu"));
+        boutonRecommencer.addEvenementBouton(() -> {
+            recommencer();
+        });
 
         listeBouton.add(boutonPause);
         listeBouton.add(boutonRecommencer);
 
-        while(true) {
+        recommencer();
+        demarrer();
+    }
 
+    public void recommencer() {
+
+        pause = false;
+        listeBalle.clear();
+        listeBrique.clear();
+
+        for (int i = 0; i < 3; i++) {
+            listeBalle.add(new Balle(20));
+        }
+
+        for (int indexColonne = 0; indexColonne < 10; indexColonne++) {
+            for (int indexLigne = 0; indexLigne < 5; indexLigne++) {
+                listeBrique.add(new Brique(indexColonne * 50, indexLigne * 30));
+            }
+        }
+
+    }
+
+    public void demarrer() {
+
+        while (true) {
             try {
-
                 Graphics2D dessin = (Graphics2D) this.getBufferStrategy().getDrawGraphics();
+                if (!pause) {
+                    dessin.setColor(Color.WHITE);
+                    dessin.fillRect(0, 0, LARGEUR, HAUTEUR);
 
-                dessin.setColor(Color.WHITE);
-                dessin.fillRect(0,0, LARGEUR, HAUTEUR);
+                    barre.dessiner(dessin);
 
-                barre.dessiner(dessin);
-
-                for(Brique brique : listeBrique) {
-                    brique.dessiner(dessin);
-                }
-
-                for(Balle balle : listeBalle) {
-                    balle.dessiner(dessin);
-                    balle.deplacement();
-
-                    //pour chaque brique, tester la collision
-                    for(Brique brique : listeBrique) {
-
-                        //si collision
-
-                        //stocker dans une liste les brique impactées
+                    for (Brique brique : listeBrique) {
+                        brique.dessiner(dessin);
                     }
-                    //apres le foreach des briques, supprimer les brique impactées
 
-                    //Note : parce qu'on ne peut pas supprimer un element d'une liste
-                    // alors qu'on parcours cette liste
+                    for (Balle balle : listeBalle) {
+                        balle.dessiner(dessin);
+                        balle.deplacement();
 
-                    if(barre.collision(balle)){
-                        balle.setVitesseVertical(-balle.getVitesseVertical());
+                        //pour chaque brique, tester la collision
+                        for (Brique brique : listeBrique) {
+
+                            //si collision
+
+                            //stocker dans une liste les brique impactées
+                        }
+                        //apres le foreach des briques, supprimer les brique impactées
+
+                        //Note : parce qu'on ne peut pas supprimer un element d'une liste
+                        // alors qu'on parcours cette liste
+
+                        if (barre.collision(balle)) {
+                            balle.setVitesseVertical(-balle.getVitesseVertical());
+                        }
                     }
+
+                    for (CanvasBouton bouton : listeBouton) {
+                        bouton.dessiner(dessin);
+                    }
+
+                    dessin.dispose();
+                    this.getBufferStrategy().show();
+
+                    Thread.sleep(1000 / 60);
+
                 }
-
-                for(CanvasBouton bouton : listeBouton) {
-                    bouton.dessiner(dessin);
-                }
-
-                dessin.dispose();
-                this.getBufferStrategy().show();
-
-                Thread.sleep(1000 / 60);
             } catch (InterruptedException e) {
                 System.out.println("processus arreté");
             }
@@ -128,7 +145,7 @@ public class CasseBrique extends Canvas implements KeyListener, MouseListener {
     public void keyPressed(KeyEvent e) {
 
         //quand la touche gauche est enfoncée
-        if(e.getKeyCode() == 37) {
+        if (e.getKeyCode() == 37) {
             barre.deplacerGauche();
         } else if (e.getKeyCode() == 39) {
             //quand la touche droite est enfoncée
@@ -137,12 +154,10 @@ public class CasseBrique extends Canvas implements KeyListener, MouseListener {
     }
 
 
-
     @Override
     public void keyTyped(KeyEvent e) {
 
     }
-
 
 
     @Override
@@ -159,7 +174,7 @@ public class CasseBrique extends Canvas implements KeyListener, MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         for (CanvasBouton bouton : listeBouton) {
-            if(bouton.collision(e.getX(), e.getY())) {
+            if (bouton.collision(e.getX(), e.getY())) {
                 bouton.clic();
             }
         }
