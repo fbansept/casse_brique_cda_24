@@ -3,21 +3,24 @@ package jeu;
 import jeu.models.Balle;
 import jeu.models.Barre;
 import jeu.models.Brique;
+import jeu.models.CanvasBouton;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
-public class CasseBrique extends Canvas implements KeyListener {
+public class CasseBrique extends Canvas implements KeyListener, MouseListener {
 
     public static final int LARGEUR = 500;
     public static final int HAUTEUR = 600;
 
     protected ArrayList<Balle> listeBalle = new ArrayList<>();
     protected ArrayList<Brique> listeBrique = new ArrayList<>();
-
+    protected ArrayList<CanvasBouton> listeBouton = new ArrayList<>();
 
     protected Barre barre = new Barre();
 
@@ -36,10 +39,10 @@ public class CasseBrique extends Canvas implements KeyListener {
         fenetre.setResizable(false);
         fenetre.requestFocus();
         fenetre.addKeyListener(this);
+        addMouseListener(this);
 
         Container panneau = fenetre.getContentPane();
         panneau.add(this);
-
 
         fenetre.setVisible(true);
         this.createBufferStrategy(2);
@@ -58,6 +61,19 @@ public class CasseBrique extends Canvas implements KeyListener {
             }
         }
 
+        CanvasBouton boutonPause = new CanvasBouton(
+                20, 20, Color.BLUE, 50, 40, "PAUSE");
+
+        boutonPause.addEvenementBouton(() -> System.out.println("jeu en pause"));
+
+        CanvasBouton boutonRecommencer = new CanvasBouton(
+                150, 20, Color.BLUE, 100, 40, "RECOMMENCER");
+
+        boutonRecommencer.addEvenementBouton(() -> System.out.println("Recommencer le jeu"));
+
+        listeBouton.add(boutonPause);
+        listeBouton.add(boutonRecommencer);
+
         while(true) {
 
             try {
@@ -73,13 +89,17 @@ public class CasseBrique extends Canvas implements KeyListener {
                     brique.dessiner(dessin);
                 }
 
-
                 for(Balle balle : listeBalle) {
                     balle.dessiner(dessin);
                     balle.deplacement();
 
                     //pour chaque brique, tester la collision
-                    //stocker dans une liste les brique impactées
+                    for(Brique brique : listeBrique) {
+
+                        //si collision
+
+                        //stocker dans une liste les brique impactées
+                    }
                     //apres le foreach des briques, supprimer les brique impactées
 
                     //Note : parce qu'on ne peut pas supprimer un element d'une liste
@@ -88,6 +108,10 @@ public class CasseBrique extends Canvas implements KeyListener {
                     if(barre.collision(balle)){
                         balle.setVitesseVertical(-balle.getVitesseVertical());
                     }
+                }
+
+                for(CanvasBouton bouton : listeBouton) {
+                    bouton.dessiner(dessin);
                 }
 
                 dessin.dispose();
@@ -129,6 +153,35 @@ public class CasseBrique extends Canvas implements KeyListener {
     public static void main(String[] args) {
 
         new CasseBrique();
+
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        for (CanvasBouton bouton : listeBouton) {
+            if(bouton.collision(e.getX(), e.getY())) {
+                bouton.clic();
+            }
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
 
     }
 }
